@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nca/cubit/switch_page_cubit.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({super.key});
@@ -8,7 +10,9 @@ class DetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<SwitchPageCubit>().navigateToProjectsPage();
+          },
           icon: Icon(Icons.arrow_back),
         ),
         title: Text(

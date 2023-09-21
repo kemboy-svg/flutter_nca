@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:nca/pages/projects_page.dart';
 
 part 'switch_page_state.dart';
 
@@ -14,7 +15,10 @@ class SwitchPageCubit extends Cubit<SwitchPageState> {
   }
 
   void navigateToProjectDetails(){
-    emit(ProjectDetailsPage());
+    emit(ProjectDetailsPageState());
+  }
+  void navigateToProjectsPage(){
+    emit(ProjectPageState());
   }
 
 }
