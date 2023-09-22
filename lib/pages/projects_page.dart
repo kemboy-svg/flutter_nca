@@ -14,6 +14,9 @@ class ProjectPage extends StatelessWidget {
         if (state is ProjectDetailsPageState){
           return DetailsPage();
         }
+        if (state is LoadingState ){
+          return Center(child: CircularProgressIndicator(backgroundColor: Colors.blue,));
+        }
         return Scaffold(
           backgroundColor: Image.asset('images/Contours.png').color,
           appBar: AppBar(
@@ -120,7 +123,7 @@ class ProjectBanner extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           context.read<SwitchPageCubit>().navigateToProjectDetails();
-          print("Gesture pressed");
+          
         },
         child: Container(
           decoration: BoxDecoration(

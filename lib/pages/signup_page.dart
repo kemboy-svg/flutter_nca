@@ -44,7 +44,7 @@ class SignUpPage extends StatelessWidget {
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop(); 
+                            Navigator.of(context).pop();
                           },
                           child: Text('OK'),
                         ),
@@ -172,6 +172,9 @@ class _SignUpFormState extends State<SignUpForm> {
   int minPassword = 6;
   String _passwordErrorMessage = '';
   int minPhone = 10;
+  int minName = 3;
+  String _passwordMessage = '';
+  
 
   @override
   void initState() {
@@ -200,20 +203,27 @@ class _SignUpFormState extends State<SignUpForm> {
   void updateButtonState() {
     setState(() {
       final firstname = widget.firstNameController.text;
-      final lastname = widget.firstNameController.text;
-      final email = widget.firstNameController.text;
-      final phone = widget.firstNameController.text;
+      final lastname = widget.lastNameController.text;
+      final email = widget.emailController.text;
+      final phone = widget.phoneController.text;
       final password = widget.passwordController.text;
       final confpassword = widget.confpasswordController.text;
 
-      _isButtonEnabled = firstname.isNotEmpty &&
-          lastname.isNotEmpty &&
+      _isButtonEnabled = firstname.length >= minName &&
+          lastname.length >= minName &&
           email.isNotEmpty &&
-          phone.isNotEmpty &&
+          phone.length >=10 &&
           password.length >= minPassword &&
           password == confpassword &&
           confpassword.isNotEmpty;
 
+     if (password.length < minPassword && password.length >0){
+        _passwordMessage= 'Password should be at least 6 characters long';
+     }
+     else{
+      _passwordMessage='';
+     }
+     
       if (password != confpassword) {
         _passwordErrorMessage = 'Ooh buddy make sure you match the password';
       } else {
@@ -224,10 +234,13 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+    // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
     final signupBloc = BlocProvider.of<SignUpBloc>(context);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Form(
+        // key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -311,8 +324,13 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             TextFormField(
               controller: widget.passwordController,
+              
+              
               decoration: InputDecoration(
                 labelText: 'Password',
+                errorText: _passwordMessage.isNotEmpty
+                    ? _passwordMessage
+                    : null,
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 border: OutlineInputBorder(

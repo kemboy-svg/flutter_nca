@@ -11,3 +11,4 @@ final class ProjectDetailsPageState extends SwitchPageState{}
 
 final class ProjectPageState extends SwitchPageState{}
  
+ final class LoadingState extends SwitchPageState{}

@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             
         ],
        
-        child: ProjectPage(),
+        child: LoginPage(),
       ),
     );
   }
