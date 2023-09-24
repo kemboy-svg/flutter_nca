@@ -60,43 +60,108 @@ class _DocumentsWidgetState extends State<DocumentsWidget> {
                             ),
                             TextButton(
                               onPressed: () {},
-                              child: Text('Choose file'),
+                              child: Text(
+                                'Choose file',
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue,
+                                    color: Colors.blue),
+                              ),
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Text("NEMA"),
+                            Text("EBK"),
                             SizedBox(
-                              width: 80,
+                              width: 100,
                             ),
                             TextButton(
                               onPressed: () {},
-                              child: Text('Choose file'),
+                              child: Text(
+                                'Choose file',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue),
+                              ),
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Text("NEMA"),
+                            Text("KRA"),
                             SizedBox(
-                              width: 80,
+                              width: 100,
                             ),
                             TextButton(
                               onPressed: () {},
-                              child: Text('Choose file'),
+                              child: Text(
+                                'Choose file',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue),
+                              ),
                             ),
                           ],
                         ),
                         Row(
                           children: [
-                            Text("NEMA"),
+                            Text("BORAQS"),
                             SizedBox(
                               width: 80,
                             ),
                             TextButton(
                               onPressed: () {},
-                              child: Text('Choose file'),
+                              child: Text(
+                                'Choose file',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  decorationColor: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () {},
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'Registration certificate: ',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+
+                            Text(
+                              'Pending',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
                           ],
                         ),

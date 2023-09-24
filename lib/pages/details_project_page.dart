@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:nca/pages/widgets/contracter_widget.dart';
 import 'package:nca/pages/widgets/documents_widget.dart';
 
 class DetailsPage extends StatelessWidget {
@@ -32,6 +33,10 @@ class DetailsPage extends StatelessWidget {
             ),
             
             DocumentsWidget(),
+             SizedBox(
+              height: 20,
+            ),
+            ContracterWidget(),
           ],
         ),
       ),
