@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/add_project/bloc/add_project_bloc.dart';
 import 'package:nca/bloc/image_picker/bloc/pick_image_bloc.dart';
 import 'package:nca/bloc/pick_coordinates/bloc/coordinates_bloc.dart';
+import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/pages/projects_page.dart';
 import 'package:nca/repos/project_repository.dart';
 
@@ -26,23 +27,29 @@ class ProjectDialog extends StatelessWidget {
         BlocProvider(
           create: (context) => CoordinatesBloc(),
         ),
+         BlocProvider(
+          create: (context) => SwitchPageCubit(),
+        ),
+
       ],
       child: BlocBuilder<CoordinatesBloc, CoordinatesState>(
         builder: (context, state) {
+
           // final coordinatesbloc = BlocProvider.of<CoordinatesBloc>(context);
+
           final addprojectbloc = BlocProvider.of<ProjectBloc>(context);
-          Widget buttonText;
+          Widget buttonWidget;
 
           if (state is LocationServiceDisabled) {
-            buttonText = Text('Enable Location Services');
+            buttonWidget = Text('Enable Location Services');
           } else if (state is PermissionDenied ||
               state is PermissionDeniedForever) {
-            buttonText = Text('Grant Location Permission');
+            buttonWidget = Text('Grant Location Permission');
           } else if (state is coordinatesPicked) {
-            buttonText = Text(
+            buttonWidget = Text(
                 'Picked Coordinates:${(state).coordinates.latitude},${(state).coordinates.longitude}');
           } else {
-            buttonText = Text(
+            buttonWidget = Text(
               "Confirm this is the project's Location?",
               style: TextStyle(
                 color: Colors.blue,
@@ -110,7 +117,7 @@ class ProjectDialog extends StatelessWidget {
                             color: Color.fromRGBO(242, 245, 246, 1),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          child: buttonText,
+                          child: buttonWidget,
                         ),
                       ),
                       SizedBox(height: 16.0),

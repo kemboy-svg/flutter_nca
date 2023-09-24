@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/pages/details_project_page.dart';
-import 'package:nca/pages/widgets/add_project_dialog.dart';
+import 'package:nca/pages/widgets/add_newproject_dialog.dart';
 
 class ProjectPage extends StatelessWidget {
   const ProjectPage({super.key});

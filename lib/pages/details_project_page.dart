@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:nca/pages/widgets/documents_widget.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({super.key});
@@ -29,7 +30,8 @@ class DetailsPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            _projectSteps(),
+            
+            DocumentsWidget(),
           ],
         ),
       ),
@@ -85,88 +87,6 @@ class _ProjectBanner extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _projectSteps extends StatelessWidget {
-  // const _projectSteps({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          children: [
-            Stepper(
-              currentStep: 0,
-              steps: [
-                Step(
-                  title: Text(
-                    "Documents",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  content: Column(
-                    children: [
-                      Text("Content for Documents step"),
-                    ],
-                  ),
-                ),
-                Step(
-                  title: Text(
-                    "Contractor",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  content: Column(
-                    children: [
-                      Text("Content for Contractor step"),
-                    ],
-                  ),
-                ),
-                Step(
-                  title: Text(
-                    "Ground Breaking",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  content: Column(
-                    children: [
-                      // Add your content for the "Ground Breaking" step here
-                      // For example, you can add a Text widget with relevant content.
-                      Text("Content for Ground Breaking step"),
-                    ],
-                  ),
-                ),
-                Step(
-                  title: Text(
-                    "Final Inspection",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  content: Column(
-                    children: [
-                      // Add your content for the "Ground Breaking" step here
-                      // For example, you can add a Text widget with relevant content.
-                      Text("Content for Ground Breaking step"),
-                    ],
-                  ),
-                ),
-                Step(
-                  title: Text(
-                    "Project Closure",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  content: Column(
-                    children: [
-                      // Add your content for the "Ground Breaking" step here
-                      // For example, you can add a Text widget with relevant content.
-                      Text("Content for Ground Breaking step"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

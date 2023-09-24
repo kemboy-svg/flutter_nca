@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/signup/bloc/sign_up_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:nca/pages/login_page.dart';
 import 'package:nca/repos/user_repository.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class SignUpPage extends StatelessWidget {
       child: BlocBuilder<SignUpBloc, SignUpState>(
         builder: (context, state) {
           return BlocListener<SignUpBloc, SignUpState>(
+            
             listener: (context, state) {
               if (state is SignedUpFailure) {
                 ScaffoldMessenger.of(context)
@@ -45,6 +47,12 @@ class SignUpPage extends StatelessWidget {
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
                           },
                           child: Text('OK'),
                         ),
@@ -174,7 +182,6 @@ class _SignUpFormState extends State<SignUpForm> {
   int minPhone = 10;
   int minName = 3;
   String _passwordMessage = '';
-  
 
   @override
   void initState() {
@@ -212,18 +219,17 @@ class _SignUpFormState extends State<SignUpForm> {
       _isButtonEnabled = firstname.length >= minName &&
           lastname.length >= minName &&
           email.isNotEmpty &&
-          phone.length >=10 &&
+          phone.length >= 10 &&
           password.length >= minPassword &&
           password == confpassword &&
           confpassword.isNotEmpty;
 
-     if (password.length < minPassword && password.length >0){
-        _passwordMessage= 'Password should be at least 6 characters long';
-     }
-     else{
-      _passwordMessage='';
-     }
-     
+      if (password.length < minPassword && password.length > 0) {
+        _passwordMessage = 'Password should be at least 6 characters long';
+      } else {
+        _passwordMessage = '';
+      }
+
       if (password != confpassword) {
         _passwordErrorMessage = 'Ooh buddy make sure you match the password';
       } else {
@@ -239,174 +245,167 @@ class _SignUpFormState extends State<SignUpForm> {
     final signupBloc = BlocProvider.of<SignUpBloc>(context);
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Form(
-        // key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              controller: widget.firstNameController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                labelText: 'First Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextFormField(
+            controller: widget.firstNameController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              labelText: 'First Name',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.blue,
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: widget.lastNameController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                labelText: 'Last Name',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            controller: widget.lastNameController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              labelText: 'Last Name',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.blue,
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: widget.emailController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                labelText: 'Email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            controller: widget.emailController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              labelText: 'Email',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.blue,
                 ),
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: widget.phoneController,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                labelText: 'Phone No',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            controller: widget.phoneController,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              labelText: 'Phone No',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.blue,
                 ),
               ),
-              validator: (value) {
-                if (value == null || !RegExp(r'^[0-9]+$').hasMatch(value)) {
-                  return 'Phone number must contain only digits';
-                }
-                return null;
-              },
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly,
-              ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: widget.passwordController,
-              
-              
-              decoration: InputDecoration(
-                labelText: 'Password',
-                errorText: _passwordMessage.isNotEmpty
-                    ? _passwordMessage
-                    : null,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
+            validator: (value) {
+              if (value == null || !RegExp(r'^[0-9]+$').hasMatch(value)) {
+                return 'Phone number must contain only digits';
+              }
+              return null;
+            },
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            controller: widget.passwordController,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              errorText: _passwordMessage.isNotEmpty ? _passwordMessage : null,
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.blue,
                 ),
               ),
-              obscureText: true,
             ),
-            SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              controller: widget.confpasswordController,
-              decoration: InputDecoration(
-                labelText: 'Confirm Password',
-                errorText: _passwordErrorMessage.isNotEmpty
-                    ? _passwordErrorMessage
-                    : null,
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(
-                    color: Colors.blue,
-                  ),
+            obscureText: true,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            controller: widget.confpasswordController,
+            decoration: InputDecoration(
+              labelText: 'Confirm Password',
+              errorText: _passwordErrorMessage.isNotEmpty
+                  ? _passwordErrorMessage
+                  : null,
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Colors.blue,
                 ),
               ),
-              obscureText: true,
-              onChanged: (_) {
-                _isButtonEnabled;
-              },
             ),
-            SizedBox(
-              height: 30,
-            ),
-            BlocBuilder<SignUpBloc, SignUpState>(
-              builder: (context, state) {
-                if (state is SigningUp) {
-                  return CircularProgressIndicator(
-                    color: Colors.blue,
-                  );
-                } else {
-                  return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+            obscureText: true,
+            onChanged: (_) {
+              _isButtonEnabled;
+            },
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          BlocBuilder<SignUpBloc, SignUpState>(
+            builder: (context, state) {
+              if (state is SigningUp) {
+                return CircularProgressIndicator(
+                  color: Colors.blue,
+                );
+              } else {
+                return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Text(
-                        'Create',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    child: Text(
+                      'Create',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
-                      onPressed: _isButtonEnabled
-                          ? () {
-                              signupBloc.add(
-                                SignUpButtonTapped(
-                                    firstname: widget.firstNameController.text,
-                                    lastname: widget.lastNameController.text,
-                                    email: widget.emailController.text,
-                                    phone: widget.phoneController.text,
-                                    password: widget.passwordController.text),
-                              );
-                            }
-                          : null);
-                }
-              },
-            ),
-          ],
-        ),
+                    ),
+                    onPressed: _isButtonEnabled
+                        ? () {
+                            signupBloc.add(
+                              SignUpButtonTapped(
+                                  firstname: widget.firstNameController.text,
+                                  lastname: widget.lastNameController.text,
+                                  email: widget.emailController.text,
+                                  phone: widget.phoneController.text,
+                                  password: widget.passwordController.text),
+                            );
+                          }
+                        : null);
+              }
+            },
+          ),
+        ],
       ),
     );
   }
