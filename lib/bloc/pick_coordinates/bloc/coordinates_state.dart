@@ -22,6 +22,7 @@ final class coordinatesPicked extends CoordinatesState{
 
   List<Object>get props => [];
 }
+final class coordinatesPicking extends CoordinatesState{} 
 final class coordinatesError extends CoordinatesState{
   final String error;
 

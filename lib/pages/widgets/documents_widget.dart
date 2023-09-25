@@ -44,7 +44,7 @@ class _DocumentsWidgetState extends State<DocumentsWidget> {
                               color: Colors.blue,
                             ),
                             Text(
-                              'Please provide the following details in order\n to register your project at NCA.',
+                              'Please provide the following details\n in order to register your project at NCA.',
                               style: TextStyle(color: Colors.blue),
                             ),
                           ],

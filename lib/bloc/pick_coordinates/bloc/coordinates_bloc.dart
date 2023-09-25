@@ -12,6 +12,7 @@ class CoordinatesBloc extends Bloc<CoordinatesEvent, CoordinatesState> {
       emit(CoordinatesInitial());
     
       try {
+        emit(coordinatesPicking());
         if (!await Geolocator.isLocationServiceEnabled()) {
           emit(LocationServiceDisabled());
           return;
@@ -32,7 +33,7 @@ class CoordinatesBloc extends Bloc<CoordinatesEvent, CoordinatesState> {
           return;
         }
 
-
+        
          final position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
             emit (coordinatesPicked(coordinates: position));
