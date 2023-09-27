@@ -6,8 +6,8 @@ import 'package:nca/pages/widgets/documents_widget.dart';
 import 'package:nca/pages/widgets/groundBreaking_widget.dart';
 
 
-class DetailsPage extends StatelessWidget {
-  const DetailsPage({super.key});
+class ProjectDetailsPage extends StatelessWidget {
+  const ProjectDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

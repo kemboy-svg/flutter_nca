@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/signup/bloc/sign_up_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
-import 'package:nca/pages/login_page.dart';
 import 'package:nca/repos/user_repository.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -42,19 +41,20 @@ class SignUpPage extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('Sign Up Successful'),
-                      content: Text('You can now proceed to login.'),
+                      content: Text('Please confirm your email before login.'),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
+                            //  Navigator.of(context).pop();
 
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => LoginPage(),
-                              ),
-                            );
+                            // Navigator.of(context).push(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => LoginPage(),
+                            //   ),
+                            // );
                           },
-                          child: Text('OK'),
+                          child: Text('open Gmail'),
                         ),
                       ],
                     );

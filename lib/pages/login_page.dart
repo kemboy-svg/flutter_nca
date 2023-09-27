@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nca/bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/pages/projects_page.dart';
 import 'package:nca/pages/signup_page.dart';
@@ -38,6 +39,9 @@ class LoginPage extends StatelessWidget {
               return BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   if (state is LoginSuccess) {
+
+                      context.read<UserProjectsBloc>().add(LoadProjectsEvent());
+
                     return ProjectPage();
                   } else {
                     return SingleChildScrollView(

@@ -1,57 +1,55 @@
-
 import 'dart:convert';
 
-void main() {
-  
-  String jsonData = '''
-  [
-    {
-      "id": 1,
-      "ProjectName": "Project 1",
-      "ImageUrl": "https://example.com/project1.jpg",
-      "Coordinates": {
-        "latitude": 40.7128,
-        "longitude": -74.0060
-      }
-    },
-    {
-      "id": 2,
-      "ProjectName": "Project 2",
-      "ImageUrl": "https://example.com/project2.jpg",
-      "Coordinates": {
-        "latitude": 34.0522,
-        "longitude": -118.2437
-      }
-    },
-    {
-      "id": 3,
-      "ProjectName": "Project 3",
-      "ImageUrl": "https://example.com/project3.jpg",
-      "Coordinates": {
-        "latitude": 51.5074,
-        "longitude": -0.1278
-      }
-    },
-    {
-      "id": 4,
-      "ProjectName": "Project 4",
-      "ImageUrl": "https://example.com/project4.jpg",
-      "Coordinates": {
-        "latitude": 48.8566,
-        "longitude": 2.3522
-      }
-    }
-  ]
-  ''';
+List<ProjectModel> projectsFromMap(String str) => List<ProjectModel>.from(
+      json.decode(str).map(
+            (x) => ProjectModel.fromJson(x),
+          ),
+    );
 
-  
-  List<Map<String, dynamic>> projects = json.decode(jsonData);
+class ProjectModel {
+  int id;
+  String projectName;
+  String imageUrl;
+  Coordinates coordinates;
 
+  ProjectModel({
+    required this.id,
+    required this.projectName,
+    required this.imageUrl,
+    required this.coordinates,
+  });
 
-  for (var project in projects) {
-    print("Project Name: ${project['ProjectName']}");
-    print("Image URL: ${project['ImageUrl']}");
-    print("Coordinates: ${project['Coordinates']}");
-    print("ID: ${project['id']}");
-  }
+  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
+        id: json["id"],
+        projectName: json["ProjectName"],
+        imageUrl: json["ImageUrl"],
+        coordinates: Coordinates.fromMap(json["Coordinates"]),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "ProjectName": projectName,
+        "ImageUrl": imageUrl,
+        "Coordinates": coordinates.toMap(),
+      };
+}
+
+class Coordinates {
+  double latitude;
+  double longitude;
+
+  Coordinates({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  factory Coordinates.fromMap(Map<String, dynamic> json) => Coordinates(
+        latitude: json["latitude"]?.toDouble(),
+        longitude: json["longitude"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toMap() => {
+        "latitude": latitude,
+        "longitude": longitude,
+      };
 }

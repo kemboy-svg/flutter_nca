@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nca/bloc/login/bloc/login_bloc.dart';
+import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:nca/data/project_model.dart';
 import 'package:nca/pages/project_details_page.dart';
 import 'package:nca/pages/widgets/add_newproject_dialog.dart';
+// import 'package:geolocator/geolocator.dart';
 
 class ProjectPage extends StatelessWidget {
   const ProjectPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final loginState = context.read<LoginBloc>().state;
+    String userName = "";
+    if (loginState is LoginSuccess) {
+      userName = loginState.user.name;
+    }
     return BlocBuilder<SwitchPageCubit, SwitchPageState>(
       builder: (context, state) {
-        if (state is ProjectDetailsPageState){
-          return DetailsPage();
+        if (state is ProjectDetailsPageState) {
+          return ProjectDetailsPage();
         }
-        if (state is LoadingState ){
-          return Center(child: CircularProgressIndicator(backgroundColor: Colors.blue,));
+        if (state is LoadingState) {
+          return Center(
+              child: CircularProgressIndicator(
+            backgroundColor: Colors.blue,
+          ));
         }
         return Scaffold(
           backgroundColor: Image.asset('images/Contours.png').color,
           appBar: AppBar(
             title: Text(
-              'Hello Admin',
+              'Hello $userName',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -65,10 +77,29 @@ class ProjectPage extends StatelessWidget {
                         fit: BoxFit.scaleDown,
                       ),
                     ),
-                    child: ListView.builder(
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return ProjectBanner();
+                    child: BlocBuilder<UserProjectsBloc, UserProjectsState>(
+                      builder: (context, state) {
+                        if(state is ProjectsLoading){
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (state is ProjectsLoaded){
+
+                          List<ProjectModel> projectList=state.projects;
+                             print('my project$projectList');
+                        return ListView.builder(
+                          itemCount: projectList.length,
+                          itemBuilder: (context, index) {
+                            return ProjectBanner(
+                              projectName: projectList[index].projectName,
+                              imageUrl: projectList[index].imageUrl,
+                              // coordinates: projectList[index].coordinates,
+                            );
+                          },
+                        );
+                        }
+                        return Center(child: Text('No projects registered yet'));
+                        
+
                       },
                     ),
                   ),
@@ -116,6 +147,11 @@ class ProjectPage extends StatelessWidget {
 }
 
 class ProjectBanner extends StatelessWidget {
+   final String projectName;
+  final String imageUrl;
+  
+
+  ProjectBanner({super.key, required this.projectName, required this.imageUrl});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -123,7 +159,6 @@ class ProjectBanner extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           context.read<SwitchPageCubit>().navigateToProjectDetails();
-          
         },
         child: Container(
           decoration: BoxDecoration(
@@ -148,7 +183,8 @@ class ProjectBanner extends StatelessWidget {
                 child: PageView.builder(itemBuilder: (context, Index) {
                   return ClipRect(
                     child: Image.network(
-                      "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
+                      imageUrl,
+                      // "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
                       fit: BoxFit.fitWidth,
                     ),
                   );
@@ -158,7 +194,7 @@ class ProjectBanner extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                "Business Center",
+                projectName,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               ListTile(
@@ -168,7 +204,6 @@ class ProjectBanner extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              
             ],
           ),
         ),

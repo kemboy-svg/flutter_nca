@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:nca/data/user_model.dart';
 // import 'package:nca/data/user_model.dart';   
 import 'package:nca/repos/user_repository.dart';
 
@@ -17,16 +18,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginButtonPressed>((event, emit) async{
      emit (LoginLoading());
      try {
-       final success=await _loginRepository.loginUser(
+       final user=await _loginRepository.loginUser(
          event.username,
           event.password,
        );
-       if (success ){
-        emit (LoginSuccess());
+      
+        emit (LoginSuccess(user!));
        
-       }else{
-        emit (LoginFailure(error: 'invalid credentials'));
-       }
      } catch (e) {
       emit(LoginFailure(error: "error"));
      }
