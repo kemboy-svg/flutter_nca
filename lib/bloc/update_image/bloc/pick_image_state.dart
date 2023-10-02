@@ -19,6 +19,18 @@ class ImagePicked extends ImageState {
   List<Object> get props => [imagePath];
 }
 
+class ImageSaving extends ImageState{}
+
+class ImageSavingComplete extends ImageState{}
+
+class ImageSavingFailure extends ImageState{
+  final String error;
+
+  ImageSavingFailure({required this.error});
+  @override
+  List <Object> get props =>[error];
+}
+
 
 
 

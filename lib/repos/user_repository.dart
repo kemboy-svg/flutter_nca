@@ -2,23 +2,24 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:nca/data/user_model.dart';
 
+String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
 class LoginRepository {
-  String endpoint = 'https://trading.agilebiz.co.ke/api/Authentication/login';
+  
   Future<UserDetailsModel?> loginUser(String username, String password) async {
     try {
       final Map<String, dynamic> requestBody = {
-        "Email": username,
+        "email": username,
         "password": password,
       };
       print(requestBody);
 
       final response = await http.post(
-        Uri.parse(endpoint),
+        Uri.parse('$endpoint/api/auth/login'),
         body: jsonEncode(requestBody),
         headers: {
-          //  "Access-Control-Allow-Origin": "*",
+           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
-          // 'Accept': '*/*'
+          'Accept': '*/*'
         },
       );
 
@@ -27,8 +28,11 @@ class LoginRepository {
         final userMap = jsonDecode(response.body) as Map<String, dynamic>;
         return UserDetailsModel.fromJson(userMap);
       } else {
+        print(response.reasonPhrase);
         throw Exception(response.reasonPhrase);
+      
       }
+      
     } catch (error) {
       print('Error while logging in: $error');
       return null;
@@ -44,7 +48,7 @@ class LoginRepository {
 // }
 
 class SignUpRepo {
-  final String endpoint = 'https://localhost:7150/api/Auth/Register';
+  
 
   Future<bool> signupUser(
     String firstname,
@@ -52,6 +56,7 @@ class SignUpRepo {
     String email,
     String phone,
     String password,
+    String confPassword,
   ) async {
     try {
       final Map<String, dynamic> requestBody = {
@@ -60,13 +65,15 @@ class SignUpRepo {
         'email': email,
         'phoneNumber': phone,
         'password': password,
+        'confirmPassword':confPassword,
       };
       print(requestBody);
 
       final response = await http.post(
-        Uri.parse(endpoint),
+        Uri.parse('$endpoint/api/auth/reg-client'),
         body: jsonEncode(requestBody),
         headers: {
+           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
         },
       );

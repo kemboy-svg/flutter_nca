@@ -14,7 +14,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       emit(SigningUp());
       try {
         final success = await _signUpRepo.signupUser(event.firstname,
-            event.lastname, event.email, event.phone, event.password);
+            event.lastname, event.email, event.phone, event.password,event.confPassword);
             if (success){
               emit (SignedUpSuccess());
 

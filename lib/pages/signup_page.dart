@@ -20,7 +20,6 @@ class SignUpPage extends StatelessWidget {
       child: BlocBuilder<SignUpBloc, SignUpState>(
         builder: (context, state) {
           return BlocListener<SignUpBloc, SignUpState>(
-            
             listener: (context, state) {
               if (state is SignedUpFailure) {
                 ScaffoldMessenger.of(context)
@@ -323,6 +322,23 @@ class _SignUpFormState extends State<SignUpForm> {
               FilteringTextInputFormatter.digitsOnly,
             ],
           ),
+          Row(
+            children: [
+              Icon(
+                Icons.announcement_rounded,
+                color: Colors.blue,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Provide a valid phone number of 10 digits',
+                style: TextStyle(
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
@@ -398,7 +414,9 @@ class _SignUpFormState extends State<SignUpForm> {
                                   lastname: widget.lastNameController.text,
                                   email: widget.emailController.text,
                                   phone: widget.phoneController.text,
-                                  password: widget.passwordController.text),
+                                  password: widget.passwordController.text,
+                                  confPassword:
+                                      widget.confpasswordController.text),
                             );
                           }
                         : null);

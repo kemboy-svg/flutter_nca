@@ -38,7 +38,7 @@ class CoordinatesBloc extends Bloc<CoordinatesEvent, CoordinatesState> {
             desiredAccuracy: LocationAccuracy.high);
             emit (coordinatesPicked(coordinates: position));
 
-            print("CORDINATES:$position");
+            
 
       } catch (e) {
         emit(coordinatesError(error: e.toString()));

@@ -19,16 +19,24 @@ class LoginPage extends StatelessWidget {
         child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginFailure) {
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(
-                  const SnackBar(
-                    content: Center(
-                      child: Text('Invalid credentials'),
-                    ),
-                    backgroundColor: Colors.red,
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => AlertDialog(
+                  title: Text(
+                    state.error,
+                    style: TextStyle(color: Colors.red),
                   ),
-                );
+                  content: Text('Check your login details and try again'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                ),
+              );
             }
           },
           child: BlocBuilder<SwitchPageCubit, SwitchPageState>(
@@ -39,9 +47,8 @@ class LoginPage extends StatelessWidget {
               return BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   if (state is LoginSuccess) {
-
-                      context.read<UserProjectsBloc>().add(LoadProjectsEvent());
-
+                    context.read<UserProjectsBloc>().add(LoadProjectsEvent(token:state.user.token));
+ 
                     return ProjectPage();
                   } else {
                     return SingleChildScrollView(
@@ -117,6 +124,11 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+
+
+
+
+
 class Form extends StatefulWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
@@ -166,7 +178,7 @@ class _FormState extends State<Form> {
   @override
   Widget build(BuildContext context) {
     final loginBloc = BlocProvider.of<LoginBloc>(context);
-    
+
     // Wrap the TextFormField widgets with a SingleChildScrollView
     return SingleChildScrollView(
       child: Padding(
@@ -178,8 +190,8 @@ class _FormState extends State<Form> {
             TextFormField(
               controller: widget.usernameController,
               decoration: InputDecoration(
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 10.0),
                 labelText: 'Email',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -189,6 +201,8 @@ class _FormState extends State<Form> {
                 ),
               ),
             ),
+
+            
             SizedBox(height: 40),
             TextFormField(
               controller: widget.passwordController,
@@ -223,7 +237,7 @@ class _FormState extends State<Form> {
                     child: Text(
                       'Login',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -247,7 +261,6 @@ class _FormState extends State<Form> {
     );
   }
 }
-
 
 class _bottomItems extends StatelessWidget {
   @override

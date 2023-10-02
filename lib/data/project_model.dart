@@ -1,55 +1,35 @@
-import 'dart:convert';
-
-List<ProjectModel> projectsFromMap(String str) => List<ProjectModel>.from(
-      json.decode(str).map(
-            (x) => ProjectModel.fromJson(x),
-          ),
-    );
-
 class ProjectModel {
-  int id;
-  String projectName;
-  String imageUrl;
-  Coordinates coordinates;
+  final String projectId;
+  final String projectName;
+  final String coordinates; // Since the coordinates are given as a formatted string
+  final dynamic picture; // Keeping this dynamic since it's null in the given sample
+  final DateTime createdOn;
 
   ProjectModel({
-    required this.id,
+    required this.projectId,
     required this.projectName,
-    required this.imageUrl,
     required this.coordinates,
+    required this.picture,
+    required this.createdOn,
   });
 
-  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
-        id: json["id"],
-        projectName: json["ProjectName"],
-        imageUrl: json["ImageUrl"],
-        coordinates: Coordinates.fromMap(json["Coordinates"]),
-      );
+  factory ProjectModel.fromJson(Map<String, dynamic> json) {
+    return ProjectModel(
+      projectId: json['projectId'],
+      projectName: json['projectName'],
+      coordinates: json['coordinates'],
+      picture: json['picture'],
+      createdOn: DateTime.parse(json['createdOn']),
+    );
+  }
 
-  Map<String, dynamic> toMap() => {
-        "id": id,
-        "ProjectName": projectName,
-        "ImageUrl": imageUrl,
-        "Coordinates": coordinates.toMap(),
-      };
-}
-
-class Coordinates {
-  double latitude;
-  double longitude;
-
-  Coordinates({
-    required this.latitude,
-    required this.longitude,
-  });
-
-  factory Coordinates.fromMap(Map<String, dynamic> json) => Coordinates(
-        latitude: json["latitude"]?.toDouble(),
-        longitude: json["longitude"]?.toDouble(),
-      );
-
-  Map<String, dynamic> toMap() => {
-        "latitude": latitude,
-        "longitude": longitude,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'projectId': projectId,
+      'projectName': projectName,
+      'coordinates': coordinates,
+      'picture': picture,
+      'createdOn': createdOn.toIso8601String(),
+    };
+  }
 }

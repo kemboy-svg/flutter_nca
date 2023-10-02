@@ -15,6 +15,7 @@ class SignUpButtonTapped extends SignUpEvent{
  final String email;
  final String phone;
  final String password;
+ final String confPassword;
 
    SignUpButtonTapped({
   required this.firstname,
@@ -22,8 +23,9 @@ class SignUpButtonTapped extends SignUpEvent{
   required this.email,
   required this.phone,
   required this.password,
+  required this.confPassword,
  });
 
  @override
- List<Object> get props=>[firstname,lastname,email,phone,password];
+ List<Object> get props=>[firstname,lastname,email,phone,password,confPassword];
 }

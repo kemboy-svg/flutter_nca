@@ -1,4 +1,4 @@
-import 'dart:io';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -18,10 +18,13 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
       try {
         final success = await _addProjectRepo.addNewProject(
           event.ProjectName,
-          event.Image,
-          event.coordinates,
+          event.coordinatesString,
+          event.token,
+          // event.Image,
+          
 
         );
+        
        
         if (success){
           emit(ProjectSubmissionSuccess());
@@ -30,13 +33,15 @@ class ProjectBloc extends Bloc<ProjectEvent, ProjectState> {
         else{
           emit(ProjectSubmissionFailure(error: "Failed to save"),);
         }
-         print('nameof ${event.ProjectName}');
-        print(event.Image);
-        print(event.coordinates);
+        //  print('nameof ${event.ProjectName}');
+        // // print(event.Image);
+        // print(event.coordinates);
         
       } catch (e) {
         emit(ProjectSubmissionFailure(error:"An error occured while submitting project"));
       }
     });
+
+    
   }
 }

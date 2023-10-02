@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/login/bloc/login_bloc.dart';
+import 'package:nca/bloc/user_projects/bloc/delete_project_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/data/project_model.dart';
 import 'package:nca/pages/project_details_page.dart';
+import 'package:nca/pages/widgets/add_image_dialog.dart';
 import 'package:nca/pages/widgets/add_newproject_dialog.dart';
+
 // import 'package:geolocator/geolocator.dart';
 
 class ProjectPage extends StatelessWidget {
@@ -13,10 +16,15 @@ class ProjectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theProjectPageContext = context;
+
     final loginState = context.read<LoginBloc>().state;
     String userName = "";
+    String token = "";
+
     if (loginState is LoginSuccess) {
-      userName = loginState.user.name;
+      userName = loginState.user.firstName;
+      token = loginState.user.token;
     }
     return BlocBuilder<SwitchPageCubit, SwitchPageState>(
       builder: (context, state) {
@@ -79,27 +87,28 @@ class ProjectPage extends StatelessWidget {
                     ),
                     child: BlocBuilder<UserProjectsBloc, UserProjectsState>(
                       builder: (context, state) {
-                        if(state is ProjectsLoading){
+                        if (state is ProjectsLoading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        if (state is ProjectsLoaded){
+                        if (state is ProjectsLoaded) {
+                          List<ProjectModel> projectList = state.projects;
 
-                          List<ProjectModel> projectList=state.projects;
-                             print('my project$projectList');
-                        return ListView.builder(
-                          itemCount: projectList.length,
-                          itemBuilder: (context, index) {
-                            return ProjectBanner(
-                              projectName: projectList[index].projectName,
-                              imageUrl: projectList[index].imageUrl,
-                              // coordinates: projectList[index].coordinates,
-                            );
-                          },
-                        );
+                          return ListView.builder(
+                            itemCount: projectList.length,
+                            itemBuilder: (context, index) {
+                              return ProjectBanner(
+                                projectName: projectList[index].projectName,
+                                imageUrl: projectList[index].picture,
+                                coordinates: projectList[index].coordinates,
+                                Id: projectList[index].projectId,
+                                token: token,
+                                theContext: theProjectPageContext,
+                              );
+                            },
+                          );
                         }
-                        return Center(child: Text('No projects registered yet'));
-                        
-
+                        return Center(
+                            child: Text('No projects registered yet'));
                       },
                     ),
                   ),
@@ -110,9 +119,18 @@ class ProjectPage extends StatelessWidget {
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton.icon(
                       onPressed: () {
+                        final projectContext = context;
+
+                        // print('Current context${context}');
                         showDialog(
-                          context: context,
-                          builder: (context) => ProjectDialog(),
+                          context:
+                              projectContext, // Use the context from the current widget
+
+                          builder: (BuildContext context) {
+                            // print('Dialog context${context}');
+                            return AddProjectDialog(
+                                token: token, projectContext: projectContext);
+                          },
                         );
                       },
                       icon: Icon(
@@ -147,11 +165,22 @@ class ProjectPage extends StatelessWidget {
 }
 
 class ProjectBanner extends StatelessWidget {
-   final String projectName;
-  final String imageUrl;
-  
+  final String projectName;
+  final String? imageUrl;
+  final String coordinates;
+  final String Id;
+  final String token;
+  final BuildContext theContext;
 
-  ProjectBanner({super.key, required this.projectName, required this.imageUrl});
+  ProjectBanner({
+    super.key,
+    required this.projectName,
+    this.imageUrl,
+    required this.coordinates,
+    required this.Id,
+    required this.token,
+    required this.theContext,
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -182,28 +211,125 @@ class ProjectBanner extends StatelessWidget {
                 ),
                 child: PageView.builder(itemBuilder: (context, Index) {
                   return ClipRect(
-                    child: Image.network(
-                      imageUrl,
-                      // "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
-                      fit: BoxFit.fitWidth,
-                    ),
-                  );
+                      child: Image.network(
+                    imageUrl ??
+                       "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
+                    fit: BoxFit.fitWidth,
+                  ));
                 }),
               ),
               SizedBox(
                 height: 20,
               ),
-              Text(
-                projectName,
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Text(
+                    // 'Business center',
+                    projectName,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      final projectContext=context;
+                      // print('Current context${context}');
+                      showDialog(
+                        context: projectContext,
+                
+                        builder: (BuildContext context) {
+                          // print("Dialog context${context}");
+
+                          return AddImageDialog(
+                            token: token,
+                             projectId:Id,
+                             projectContext:projectContext,
+                          );
+                    
+                        },
+                      );
+                    },
+                    child: Text(
+                      'Update Image',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                ],
               ),
               ListTile(
                 leading: Icon(Icons.location_on, color: Colors.black),
                 title: Text(
-                  'Coordinates',
+                  // 'Coordinates',
+                  coordinates,
                   style: TextStyle(fontSize: 16),
                 ),
               ),
+
+              TextButton(
+                onPressed: () {
+                  // final theProjectContext = context;
+                  print('current context${context}');
+
+                  showDialog(
+                    context: theContext,
+                    builder: (BuildContext dialogContext) {
+                      print('dialog context${dialogContext}');
+                      return AlertDialog(
+                        title: Text('Confirm'),
+                        content: Text(
+                          'Are you sure you want to delete the ${projectName} project?',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        actions: [
+                          TextButton(
+                            child: Text('No'),
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text('Yes'),
+                            onPressed: () {
+                              try {
+                                BlocProvider.of<UserProjectsBloc>(theContext)
+                                    .add(LoadProjectsEvent(token: token));
+                                BlocProvider.of<DeleteProjectBloc>(theContext)
+                                    .add(onDeleteEvent(
+                                        projectId: Id, token: token));
+
+                                Navigator.of(dialogContext).pop();
+                              } catch (e) {
+                                print(e.toString());
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+
+              // TextButton(
+              //   onPressed: () {
+              //     // BlocProvider.of<DeleteProjectBloc>(context)
+              //     //     .add(onDeleteEvent(projectId: Id, token: token));
+              //     context
+              //         .read<DeleteProjectBloc>()
+              //         .add(onDeleteEvent(projectId: Id, token: token));
+
+              //     context
+              //         .read<UserProjectsBloc>()
+              //         .add(LoadProjectsEvent(token: token));
+              //   },
+              //   child: Text(
+              //     'Delete',
+              //     style: TextStyle(color: Colors.red),
+              //   ),
+              // ),
             ],
           ),
         ),

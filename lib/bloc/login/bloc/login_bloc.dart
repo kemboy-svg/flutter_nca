@@ -23,10 +23,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           event.password,
        );
       
-        emit (LoginSuccess(user!));
+        
+        if (user != null) {
+          emit(LoginSuccess(user));
+        } else {
+      
+          emit(LoginFailure(error: "User not found"));
+        }
        
      } catch (e) {
-      emit(LoginFailure(error: "error"));
+      emit(LoginFailure(error: e.toString()));
      }
     });
    

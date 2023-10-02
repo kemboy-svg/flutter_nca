@@ -14,15 +14,18 @@ class UserProjectsBloc extends Bloc<UserProjectsEvent, UserProjectsState> {
     on<LoadProjectsEvent>((event, emit) async{
      try {
        emit(ProjectsLoading());
-           await Future.delayed(Duration(seconds: 5));
-      final projects =await _userprojectsRepo.getProjects();
+           
+      final projects =await _userprojectsRepo.getProjects(
+        event.token,
+      );
       
        emit(ProjectsLoaded(projects));
        print(projects);
-     } catch (e) {
+     } catch (e,stacktrace) {
 
        emit(ProjectsError(e.toString()));
        print("some error ${e.toString()}");
+        print(stacktrace); 
      }
     });
   }
