@@ -6,6 +6,7 @@ import 'package:nca/bloc/login/bloc/login_bloc.dart';
 import 'package:nca/bloc/signup/bloc/sign_up_bloc.dart';
 import 'package:nca/bloc/update_image/bloc/pick_image_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/delete_project_bloc.dart';
+import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,6 +48,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => ImageBloc(ProjectImageRepo()),
           ),
+          BlocProvider(
+            create: (context) => ProjectDetailsBloc(ProjectDetailsRepo()),
+          ),
+          
           
           BlocProvider(
             create: (context) => UserProjectsBloc(UserProjectsRepo(),),

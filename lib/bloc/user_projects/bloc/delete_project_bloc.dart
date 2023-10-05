@@ -19,6 +19,7 @@ class DeleteProjectBloc extends Bloc<DeleteProjectEvent, DeleteProjectState> {
           
         );
         if (success==true){
+          
           emit(ProjectDeleted());
         }
         else{

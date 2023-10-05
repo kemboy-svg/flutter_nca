@@ -1,6 +1,9 @@
+
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:nca/data/serverResponse_model.dart';
 import 'package:nca/repos/user_repository.dart';
 
 part 'sign_up_event.dart';
@@ -13,18 +16,26 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpButtonTapped>((event, emit) async {
       emit(SigningUp());
       try {
-        final success = await _signUpRepo.signupUser(event.firstname,
-            event.lastname, event.email, event.phone, event.password,event.confPassword);
-            if (success){
-              emit (SignedUpSuccess());
+        final response = await _signUpRepo.signupUser(
+            event.firstname,
+            event.lastname,
+            event.email,
+            event.phone,
+            event.password,
+            event.confPassword);
+        if (response == true) {
+          emit(SignedUpSuccess());
 
-              print("Signed up successfully");
-            }
-            else{
-              emit (SignedUpFailure(error: "An error occurred"));
-            }
+          print("Signed up successfully");
+        } else if(response is ServerResponse) {
+          
+        emit(SignedUpFailure(serverResponse: response));
+        print("responses ${response.message},${response.status}");
+        }
+        
       } catch (e) {
-        emit(SignedUpFailure(error: "unknown error"));
+        print("error on signup${e.toString()}");
+        // emit(SignedUpFailure(error: "unknown error"));
       }
     });
   }

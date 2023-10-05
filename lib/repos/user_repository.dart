@@ -1,8 +1,11 @@
 import 'package:http/http.dart' as http;
+import 'package:nca/data/serverResponse_model.dart';
 import 'dart:convert';
 import 'package:nca/data/user_model.dart';
 
-String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
+//  final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
+ final String endpoint = "https://localhost:7284";
+
 class LoginRepository {
   
   Future<UserDetailsModel?> loginUser(String username, String password) async {
@@ -33,24 +36,18 @@ class LoginRepository {
       
       }
       
-    } catch (error) {
-      print('Error while logging in: $error');
+    } catch (e,stacktrace) {
+      print("stackTrace${stacktrace}");
+      print('Error while logging in: $e');
       return null;
     }
   }
 }
 
-// await Future.delayed(Duration(seconds: 2));
-// if (username == "admin" && password == "password") {
-//   return true;
-// } else {
-//   return false;
-// }
+
 
 class SignUpRepo {
-  
-
-  Future<bool> signupUser(
+  Future<Object> signupUser(
     String firstname,
     String lastname,
     String email,
@@ -60,31 +57,36 @@ class SignUpRepo {
   ) async {
     try {
       final Map<String, dynamic> requestBody = {
-        'firstName': firstname,
-        'lastName': lastname,
-        'email': email,
-        'phoneNumber': phone,
-        'password': password,
-        'confirmPassword':confPassword,
+        "firstName": firstname,
+        "lastName": lastname,
+        "email": email,
+        "phoneNo": phone,
+        "password": password,
+        "confirmPassword": confPassword,
       };
-      print(requestBody);
 
       final response = await http.post(
         Uri.parse('$endpoint/api/auth/reg-client'),
         body: jsonEncode(requestBody),
         headers: {
-           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
+          'Accept': '*/*',
         },
       );
 
       if (response.statusCode == 200) {
         return true;
       } else {
-        print('Registration failed with status code: ${response.statusCode}');
-        return false;
+
+         final userToMap = jsonDecode(response.body) as Map<String, dynamic>;
+      
+        return ServerResponse.fromJson(userToMap);
+
+  
       }
-    } catch (error) {
+    } catch (error, stacktrace) {
+      print("stackTrace${stacktrace}");
       print('Error while signing up: $error');
       return false;
     }

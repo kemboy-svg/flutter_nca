@@ -1,56 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/pages/widgets/contracter_widget.dart';
 import 'package:nca/pages/widgets/documents_widget.dart';
 import 'package:nca/pages/widgets/groundBreaking_widget.dart';
+import 'package:nca/repos/project_repository.dart';
 
-
+// ignore: must_be_immutable
 class ProjectDetailsPage extends StatelessWidget {
-  const ProjectDetailsPage({super.key});
+  String projectName = "";
+  String coordinates="";
+  String imageUrl="";
+
+  ProjectDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            context.read<SwitchPageCubit>().navigateToProjectsPage();
-          },
-          icon: Icon(Icons.arrow_back),
-        ),
-        title: Text(
-          "Business Center",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+    return BlocBuilder<ProjectDetailsBloc, ProjectDetailsState>(
+      builder: (context, state) {
+        if (state is ProjectDetailsLoaded) {
+          projectName = state.projectDetails.projectName;
+        }
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                context.read<SwitchPageCubit>().navigateToProjectsPage();
+              },
+              icon: Icon(Icons.arrow_back),
+            ),
+            title: Text(
+              projectName,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _ProjectBanner(),
-            SizedBox(
-              height: 20,
+          body: SingleChildScrollView(
+            // final projectDetails=context.read<ProjectDetailsBloc>().state;
+            child: Column(
+              children: [
+                BlocBuilder<ProjectDetailsBloc, ProjectDetailsState>(
+                  builder: (context, state) {
+                    if (state is ProjectDetailsLoaded) {
+                     final String ? imageUrl = state.projectDetails.picture;
+                      final coordinates = state.projectDetails.coordinates;
+                       final projectName = state.projectDetails.projectName;
+                      return ProjectBanner(
+                        coordinates: coordinates,
+                        imageUrl: imageUrl,
+                        projectName: projectName,
+                      );
+                      
+                    }
+                    if (state is ProjectDetailsLoading) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Container();
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                DocumentsWidget(),
+                SizedBox(
+                  height: 20,
+                ),
+                ContracterWidget(),
+                SizedBox(
+                  height: 8,
+                ),
+                GroundBreakingWidget(),
+              ],
             ),
-            DocumentsWidget(),
-            SizedBox(
-              height: 20,
-            ),
-            ContracterWidget(),
-            SizedBox(
-              height: 8,
-            ),
-            GroundBreakingWidget(),
-            
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
 
-class _ProjectBanner extends StatelessWidget {
+// ignore: must_be_immutable
+class ProjectBanner extends StatelessWidget {
+  String coordinates;
+  String projectName;
+  final String? imageUrl;
+
+  ProjectBanner(
+      {super.key,
+      required this.coordinates,
+      this.imageUrl,
+      required this.projectName});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,7 +122,8 @@ class _ProjectBanner extends StatelessWidget {
                   child: PageView.builder(itemBuilder: (context, Index) {
                     return ClipRect(
                       child: Image.network(
-                        "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
+                        imageUrl ??
+                            "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
                         fit: BoxFit.fitWidth,
                       ),
                     );
@@ -91,13 +133,14 @@ class _ProjectBanner extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  "Business Center",
+                  projectName,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 ListTile(
                   leading: Icon(Icons.location_on, color: Colors.black),
                   title: Text(
-                    'Coordinates',
+                    'Coordinates${coordinates}',
+                    // 'Coordinates',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -106,7 +149,9 @@ class _ProjectBanner extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left:20,),
+          padding: const EdgeInsets.only(
+            left: 20,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

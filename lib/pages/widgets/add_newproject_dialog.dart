@@ -72,7 +72,7 @@ class AddProjectDialog extends StatelessWidget {
                 'Pick Location',
                 style: TextStyle(
                   color: Colors.white,
-                ),
+                ), 
               ),
             );
           }

@@ -8,6 +8,8 @@ final class LoginPageState extends SwitchPageState {}
 final class SignUpPageState extends SwitchPageState{}
 
 final class ProjectDetailsPageState extends SwitchPageState{}
+  
+  
 
 final class ProjectPageState extends SwitchPageState{}
  

@@ -7,7 +7,8 @@ import 'package:http_parser/http_parser.dart';
 
 
 
- final String endpoint = "https://nca-qa-api.agilebiz.co.ke";
+// final String endpoint = "https://nca-qa-api.agilebiz.co.ke";
+final String endpoint = "https://localhost:7284";
  
 class AddProjectRepo {
  
@@ -156,6 +157,58 @@ class ProjectImageRepo {
     } catch (e) {
       print('This is file error ${e.toString()}');
       return false;
+    }
+  }
+}
+
+class ProjectDetailsRepo{
+  Future <ProjectDetailmodel?> getProjectDetails(String projectId,String token) async{
+   try {
+     Response response = await http.get(Uri.parse('${endpoint}/api/project/getProjectdetails/${projectId}'),
+    headers: {
+           "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': 'Bearer $token',
+        },
+    );
+
+    if (response.statusCode ==200){
+      final result =jsonDecode(response.body) as Map<String,dynamic>;
+      return ProjectDetailmodel.fromJson(result);
+    }
+    else {
+      print(response.reasonPhrase);
+        throw Exception(response.reasonPhrase);
+    }
+     
+   } catch (e) {
+    //  print("stackTrace${stacktrace}");
+      print('Error while logging in: $e');
+      return null;
+   }
+   
+  }
+}
+
+class ProjectsDocumentsRepo{
+  Future<ProjectDocumentsModel?> getProjectDocuments(String projectId,String token)async{
+    try {
+      Response response =await http.get(Uri.parse('${endpoint}/api/project/getProjectdocuments/${projectId}'),
+      headers: {
+           "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*',
+          'Authorization': 'Bearer $token',
+        },
+        );
+
+        if (response == 200){
+          final result=jsonDecode(response.body) as Map<String, dynamic>;
+          return ProjectDocumentsModel.fromJson(result);
+        }
+    } catch (e) {
+      
     }
   }
 }

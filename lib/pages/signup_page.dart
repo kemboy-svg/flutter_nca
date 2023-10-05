@@ -25,9 +25,10 @@ class SignUpPage extends StatelessWidget {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(
-                    const SnackBar(
+                     SnackBar(
+                      
                       content: Center(
-                        child: Text('OOPs! unable to create your account.'),
+                        child: Text('${state.serverResponse.status}\n${state.serverResponse.message}')
                       ),
                       backgroundColor: Colors.red,
                     ),
@@ -35,25 +36,34 @@ class SignUpPage extends StatelessWidget {
               }
 
               if (state is SignedUpSuccess) {
+                // final signState= context.read<SignUpBloc>().state;
+                final projectcontext = context;
+              
+                print("current context${context}");
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
+                    print("Dialog context${context}");
+                    
                     return AlertDialog(
-                      title: Text('Sign Up Successful'),
-                      content: Text('Please confirm your email before login.'),
+                      title: Text("Signed Up Successful"),
+                      content: Text('You can proceed to login.'),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).pop();
-                            //  Navigator.of(context).pop();
-
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(
-                            //     builder: (context) => LoginPage(),
-                            //   ),
-                            // );
                           },
-                          child: Text('open Gmail'),
+                          child: Text("No"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            //  Navigator.of(context).pop();
+                            //  context.read<SwitchPageCubit>().navigateToLogin();
+                            BlocProvider.of<SwitchPageCubit>(projectcontext)
+                                .navigateToLogin();
+                          },
+                          child: Text('Yes'),
                         ),
                       ],
                     );
@@ -402,7 +412,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     child: Text(
                       'Create',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

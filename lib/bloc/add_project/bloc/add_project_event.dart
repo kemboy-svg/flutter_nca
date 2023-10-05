@@ -20,7 +20,7 @@ class ProjectSaveButtonClicked extends ProjectEvent {
       // required this.Image,
       required this.ProjectName,
        required this.coordinates,
-       required this.token
+       required this.token, 
       }): coordinatesString = 'Latitude: ${coordinates.latitude}, Longitude: ${coordinates.longitude}';
 
   @override

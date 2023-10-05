@@ -20,50 +20,6 @@ class User {
 
 
 
-// UserModel userDetailModelFromMap(String str) => UserModel.fromJson(json.decode(str));
-
-// String userDetailModelToMap(UserModel data) => json.encode(data.toMap());
-
-// class UserModel {
-//     String name;
-//     String email;
-//     String pictureUrl;
-//     String token;
-//     bool isAdministrator;
-//     String defaultCompetition;
-
-//     UserModel({
-//         required this.name,
-//         required this.email,
-//         required this.pictureUrl,
-//         required this.token,
-//         required this.isAdministrator,
-//         required this.defaultCompetition,
-//     });
-
-//     factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-//         name: json["Name"],
-//         email: json["Email"],
-//         pictureUrl: json["PictureUrl"],
-//         token: json["token"],
-//         isAdministrator: json["isAdministrator"],
-//         defaultCompetition: json["defaultCompetition"],
-//     );
-
-//     Map<String, dynamic> toMap() => {
-//         "Name": name,
-//         "Email": email,
-//         "PictureUrl": pictureUrl,
-//         "token": token,
-//         "isAdministrator": isAdministrator,
-//         "defaultCompetition": defaultCompetition,
-//     };
-// }
-
-
-// To parse this JSON data, do
-//
-//     final temperatures = temperaturesFromMap(jsonString);
 
 
 
