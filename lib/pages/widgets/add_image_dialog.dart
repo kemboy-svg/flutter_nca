@@ -9,12 +9,12 @@ import 'package:image_picker/image_picker.dart';
 
 class AddImageDialog extends StatelessWidget {
   final String token;
-   final String projectId;
+  final String projectId;
   final BuildContext projectContext;
 
   const AddImageDialog(
       {required this.token,
-       required this.projectId,
+      required this.projectId,
       required this.projectContext});
 
   @override
@@ -126,9 +126,7 @@ class AddImageDialog extends StatelessWidget {
                     child: Text('Save'),
                     onPressed: () {
                       context.read<ImageBloc>().add(SaveImageButtonClicked(
-                          file: XFile(state.imagePath), token,
-                            projectId
-                           ));
+                          file: XFile(state.imagePath), token, projectId));
 
                       // Navigator.of(context).pop();
                     },
@@ -137,44 +135,55 @@ class AddImageDialog extends StatelessWidget {
               );
             }
             // The Default dialog
-            return AlertDialog(title: Text('Add Image'), actions: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Center(
-                    child: TextButton(
-                      onPressed: () async {
-                        BlocProvider.of<ImageBloc>(context)
-                            .add(UseCameraImage());
-                      },
-                      child: Text("Use Camera"),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      BlocProvider.of<ImageBloc>(context)
-                          .add(PickGalleryImage());
-                    },
-                    child: Text("From gallery"),
-                  ),
-                ],
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                ),
-              ),
-            ]);
+            return choiceImageWidget(
+              projectContext: projectContext,
+            );
           },
         ),
       ),
     );
+  }
+}
+
+// ignore: must_be_immutable
+class choiceImageWidget extends StatelessWidget {
+  BuildContext projectContext;
+  choiceImageWidget({super.key, required this.projectContext});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(title: Text('Add Image'), actions: <Widget>[
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(
+            child: TextButton(
+              onPressed: () async {
+                BlocProvider.of<ImageBloc>(context).add(UseCameraImage());
+              },
+              child: Text("Use Camera"),
+            ),
+          ),
+          TextButton(
+            onPressed: () async {
+              BlocProvider.of<ImageBloc>(context).add(PickGalleryImage());
+            },
+            child: Text("From gallery"),
+          ),
+        ],
+      ),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: TextButton(
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Colors.red),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+      ),
+    ]);
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class GroundBreakingWidget extends StatefulWidget {
-  const GroundBreakingWidget({super.key});
+class InspectionWidget extends StatefulWidget {
+  const InspectionWidget({super.key});
 
   @override
-  _GroundBreakingWidgetState createState() => _GroundBreakingWidgetState();
+  _InspectionWidgetState createState() => _InspectionWidgetState();
 }
 
-class _GroundBreakingWidgetState extends State<GroundBreakingWidget> {
+class _InspectionWidgetState extends State<InspectionWidget> {
   bool _showContent = false;
   final AssetImage arrowUpImage = AssetImage('images/arrow_up.png');
   final AssetImage arrowDownImage = AssetImage('images/arrow_down.png');
@@ -20,7 +20,7 @@ class _GroundBreakingWidgetState extends State<GroundBreakingWidget> {
           Row(
             children: [
               Text(
-                '3. Ground Breaking',
+                '3. Inspection Schedule',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,

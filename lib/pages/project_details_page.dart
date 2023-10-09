@@ -4,8 +4,8 @@ import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/pages/widgets/contracter_widget.dart';
 import 'package:nca/pages/widgets/documents_widget.dart';
-import 'package:nca/pages/widgets/groundBreaking_widget.dart';
-import 'package:nca/repos/project_repository.dart';
+import 'package:nca/pages/widgets/Inspection_widget.dart';
+
 
 // ignore: must_be_immutable
 class ProjectDetailsPage extends StatelessWidget {
@@ -73,7 +73,7 @@ class ProjectDetailsPage extends StatelessWidget {
                 SizedBox(
                   height: 8,
                 ),
-                GroundBreakingWidget(),
+                InspectionWidget(),
               ],
             ),
           ),
@@ -102,10 +102,11 @@ class ProjectBanner extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(30.0),
           child: Container(
+            
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 223, 217, 217),
                   spreadRadius: 10,
                   blurRadius: 5,
                   offset: Offset(0, 3),
@@ -123,6 +124,7 @@ class ProjectBanner extends StatelessWidget {
                   ),
                   child: PageView.builder(itemBuilder: (context, Index) {
                     return ClipRect(
+              
                       child: Image.network(
                         imageUrl ??
                             "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
@@ -136,8 +138,9 @@ class ProjectBanner extends StatelessWidget {
                 ),
                 Text(
                   projectName,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                 ),
+                
                 ListTile(
                   leading: Icon(Icons.location_on, color: Colors.black),
                   title: Text(
@@ -161,6 +164,25 @@ class ProjectBanner extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.blue,
                   )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40,),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 200,
+                          height: 8,
+                          decoration: BoxDecoration(
+                          color: Colors.orange,
+                          ),
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 15),
+                          child: Text("0/100",style: TextStyle(color: Colors.orange),),
+                        )
+                      ],
+                    ),
+                  ),
               Text('Awaiting site inspection'),
             ],
           ),

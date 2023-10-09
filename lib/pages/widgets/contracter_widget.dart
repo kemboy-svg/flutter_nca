@@ -97,7 +97,7 @@ class _DocumentsWidgetState extends State<ContracterWidget> {
                   child: Text(
                     'Submit',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

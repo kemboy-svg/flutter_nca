@@ -17,7 +17,7 @@ class ProjectSaveButtonClicked extends ProjectEvent {
     final String coordinatesString;
 
   ProjectSaveButtonClicked({
-      // required this.Image,
+      //  required this.Image,
       required this.ProjectName,
        required this.coordinates,
        required this.token, 
