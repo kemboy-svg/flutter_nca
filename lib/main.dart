@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nca/bloc/add_project/bloc/add_project_bloc.dart';
+import 'package:nca/bloc/get_post_documents/bloc/get_documents_bloc.dart';
 // import 'package:nca/bloc/image_picker/bloc/pick_image_bloc.dart';
 import 'package:nca/bloc/login/bloc/login_bloc.dart';
 // import 'package:nca/bloc/pick_coordinates/bloc/coordinates_bloc.dart';
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
           ),
            BlocProvider(
             create: (context) => DeleteProjectBloc(DeleteProjectRepo(),),
+          ),
+           BlocProvider(
+            create: (context) => GetDocumentsBloc(ProjectsDocumentsRepo(),),
           ),
         ],
         child: LoginPage(),

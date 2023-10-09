@@ -17,7 +17,9 @@ class SaveImageButtonClicked extends ImageEvent {
   final String token;
   final String projectId;
 
-  SaveImageButtonClicked(this.token, this.projectId, {required XFile file}) : _file = file;
+  SaveImageButtonClicked(this.token, 
+  this.projectId, 
+  {required XFile file}) : _file = file;
   @override
   List<Object> get props =>[_file,token,projectId];
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nca/bloc/get_post_documents/bloc/get_documents_bloc.dart';
 import 'package:nca/bloc/login/bloc/login_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/delete_project_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
@@ -194,6 +195,8 @@ class ProjectBanner extends StatelessWidget {
         onTap: () {
           context.read<SwitchPageCubit>().navigateToProjectDetails();
           context.read<ProjectDetailsBloc>().add(LoadProjectDetailsEvent(token: token,projectId: Id));
+          context.read<GetDocumentsBloc>().add(LoadDocumentsEvent(token: token, projectId: Id));
+          
         },
         child: Container(
           decoration: BoxDecoration(

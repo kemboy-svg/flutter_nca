@@ -58,22 +58,38 @@ class AddProjectDialog extends StatelessWidget {
             buttonWidget = Text(
                 'Project Location:${(state).coordinates.latitude},${(state).coordinates.longitude}');
           } else {
-            buttonWidget = ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            buttonWidget = Column(
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.announcement_rounded,
+                      color: Colors.blue,
+                    ),
+                    Text(
+                      'Make sure you have picked\nlocation, Your current \nlocation will be saved as\nproject location',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  ],
                 ),
-              ),
-              onPressed: () {
-                context.read<CoordinatesBloc>().add(pickCoordinateEvent());
-              },
-              child: Text(
-                'Pick Location',
-                style: TextStyle(
-                  color: Colors.white,
-                ), 
-              ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    context.read<CoordinatesBloc>().add(pickCoordinateEvent());
+                  },
+                  child: Text(
+                    'Pick Location',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             );
           }
 
@@ -96,6 +112,15 @@ class AddProjectDialog extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      
+                    },
+                    child: Text("Choose Image"),
+                  ),
+                 
+
                   GestureDetector(
                     onTap: () {
                       context
@@ -191,54 +216,51 @@ class AddProjectDialog extends StatelessWidget {
                           backgroundColor: Colors.blue,
                         );
                       else {
-                      
-                            return ElevatedButton(
-                              onPressed: () {
-                                final coordinatesState =
-                                    context.read<CoordinatesBloc>().state;
-                                // final imageState = state;
+                        return ElevatedButton(
+                          onPressed: () {
+                            final coordinatesState =
+                                context.read<CoordinatesBloc>().state;
+                            // final imageState = state;
 
-                                if (coordinatesState is coordinatesPicked &&
-                                    // imageState is ImagePicked &&
-                                    projectName.isNotEmpty) {
-                                  addprojectbloc.add(
-                                    ProjectSaveButtonClicked(
-                                        ProjectName: projectName,
-                                        // Image: File(imageState.imagePath),
-                                        coordinates:
-                                            coordinatesState.coordinates,
-                                        token: token),
+                            if (coordinatesState is coordinatesPicked &&
+                                // imageState is ImagePicked &&
+                                projectName.isNotEmpty) {
+                              addprojectbloc.add(
+                                ProjectSaveButtonClicked(
+                                    ProjectName: projectName,
+                                    // Image: File(imageState.imagePath),
+                                    coordinates: coordinatesState.coordinates,
+                                    token: token),
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      'Not saved Buddy!',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    content: Text(
+                                        'Hey!! Buddy make sure you have provided:\n 1.Project Name.\n 2.Provided an Image.\n 3.Confirm the project location\n and try again.'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('OK'),
+                                      ),
+                                    ],
                                   );
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          'Not saved Buddy!',
-                                          style: TextStyle(color: Colors.red),
-                                        ),
-                                        content: Text(
-                                            'Hey!! Buddy make sure you have provided:\n 1.Project Name.\n 2.Provided an Image.\n 3.Confirm the project location\n and try again.'),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              child: Text(
-                                'Save',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                        
+                                },
+                              );
+                            }
+                          },
+                          child: Text(
+                            'Save',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
                       }
                     },
                   ),

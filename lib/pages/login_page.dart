@@ -18,15 +18,28 @@ class LoginPage extends StatelessWidget {
         create: (context) => LoginBloc(LoginRepository()),
         child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
+            if(state is LoginNOSuccess){
+              ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                     SnackBar(
+                      
+                      content: Center(
+                        child: Text('Incorrect credentials, Please check your login details')
+                      ),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+            }
             if (state is LoginFailure) {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
                   title: Text(
-                    state.error,
+                    state.serverResponse.status,
                     style: TextStyle(color: Colors.red),
                   ),
-                  content: Text('Check your login details and try again'),
+                  content: Text(state.serverResponse.message),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {

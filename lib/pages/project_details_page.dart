@@ -12,6 +12,7 @@ class ProjectDetailsPage extends StatelessWidget {
   String projectName = "";
   String coordinates="";
   String imageUrl="";
+  String ProjectId="";
 
   ProjectDetailsPage({super.key});
 
@@ -21,6 +22,7 @@ class ProjectDetailsPage extends StatelessWidget {
       builder: (context, state) {
         if (state is ProjectDetailsLoaded) {
           projectName = state.projectDetails.projectName;
+          
         }
         return Scaffold(
           appBar: AppBar(

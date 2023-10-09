@@ -9,12 +9,12 @@ import 'package:image_picker/image_picker.dart';
 
 class AddImageDialog extends StatelessWidget {
   final String token;
-  final String projectId;
+   final String projectId;
   final BuildContext projectContext;
 
   const AddImageDialog(
       {required this.token,
-      required this.projectId,
+       required this.projectId,
       required this.projectContext});
 
   @override
@@ -126,7 +126,9 @@ class AddImageDialog extends StatelessWidget {
                     child: Text('Save'),
                     onPressed: () {
                       context.read<ImageBloc>().add(SaveImageButtonClicked(
-                          file: XFile(state.imagePath), token, projectId));
+                          file: XFile(state.imagePath), token,
+                            projectId
+                           ));
 
                       // Navigator.of(context).pop();
                     },

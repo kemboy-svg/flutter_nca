@@ -47,7 +47,7 @@ class SignUpPage extends StatelessWidget {
                     
                     return AlertDialog(
                       title: Text("Signed Up Successful"),
-                      content: Text('You can proceed to login.'),
+                      content: Text('Confirm your email and proceed to login.'),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
