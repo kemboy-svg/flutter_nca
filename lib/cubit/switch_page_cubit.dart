@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:nca/pages/forgotpassword_page.dart';
 
 part 'switch_page_state.dart';
 
@@ -25,5 +26,8 @@ class SwitchPageCubit extends Cubit<SwitchPageState> {
 
   void navigateToProjectsPage() {
     emit(ProjectPageState());
+  }
+  void navigateToForgotpassword(){
+    emit(ForgotPasswordPageState());
   }
 }

@@ -3,6 +3,7 @@ import 'package:nca/bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:nca/pages/forgotpassword_page.dart';
 import 'package:nca/pages/projects_page.dart';
 import 'package:nca/pages/signup_page.dart';
 import 'package:nca/repos/user_repository.dart';
@@ -56,6 +57,9 @@ class LoginPage extends StatelessWidget {
             builder: (context, state) {
               if (state is SignUpPageState) {
                 return SignUpPage();
+              }
+              if(state is ForgotPasswordPageState){
+                return ForgotPasswordPage();
               }
               return BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
@@ -116,7 +120,7 @@ class LoginPage extends StatelessWidget {
                           SizedBox(
                             height: 30,
                           ),
-                          Form(
+                          form(
                               usernameController: _usernameController,
                               passwordController: _passwordController),
                           SizedBox(
@@ -142,11 +146,11 @@ class LoginPage extends StatelessWidget {
 
 
 
-class Form extends StatefulWidget {
+class form extends StatefulWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
 
-  const Form({
+  const form({
     Key? key,
     required this.usernameController,
     required this.passwordController,
@@ -156,7 +160,7 @@ class Form extends StatefulWidget {
   _FormState createState() => _FormState();
 }
 
-class _FormState extends State<Form> {
+class _FormState extends State<form> {
   bool isButtonEnabled = false;
   int minPasswordLength = 6;
   int minUsernameLength = 4;
@@ -291,7 +295,9 @@ class _bottomItems extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+             context.read<SwitchPageCubit>().navigateToForgotpassword();
+          },
           child: Text(
             "Forgot password?",
             style: TextStyle(color: Colors.red),

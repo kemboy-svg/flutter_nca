@@ -3,8 +3,8 @@ import 'package:nca/data/serverResponse_model.dart';
 import 'dart:convert';
 import 'package:nca/data/user_model.dart';
 
-//  final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
- final String endpoint = "https://localhost:7284";
+// final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
+  final String endpoint = "https://localhost:7284";
 
 class LoginResponse{
    final bool success;

@@ -25,6 +25,7 @@ class ProjectDetailsPage extends StatelessWidget {
           
         }
         return Scaffold(
+          backgroundColor: Color.fromARGB(255, 243, 239, 239),
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -106,8 +107,8 @@ class ProjectBanner extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromARGB(255, 223, 217, 217),
-                  spreadRadius: 10,
+                  color: Color.fromARGB(255, 253, 253, 253),
+                  spreadRadius: 20,
                   blurRadius: 5,
                   offset: Offset(0, 3),
                 ),
@@ -124,7 +125,7 @@ class ProjectBanner extends StatelessWidget {
                   ),
                   child: PageView.builder(itemBuilder: (context, Index) {
                     return ClipRect(
-              
+                      
                       child: Image.network(
                         imageUrl ??
                             "https://media.istockphoto.com/id/170616024/photo/concrete-highrise-construction-site.jpg?s=612x612&w=0&k=20&c=7-lJj9c_WVakkqoM6WTCNu9Q-E7bV6goRzS0NBnKsCc=",
