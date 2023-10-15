@@ -3,9 +3,9 @@ import 'package:nca/bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
-import 'package:nca/pages/forgotpassword_page.dart';
-import 'package:nca/pages/projects_page.dart';
-import 'package:nca/pages/signup_page.dart';
+import 'package:nca/pages/auth/forgotpassword_page.dart';
+import 'package:nca/pages/auth/signup_page.dart';
+import 'package:nca/pages/project/projects_page.dart';
 import 'package:nca/repos/user_repository.dart';
 
 class LoginPage extends StatelessWidget {
@@ -61,6 +61,7 @@ class LoginPage extends StatelessWidget {
               if(state is ForgotPasswordPageState){
                 return ForgotPasswordPage();
               }
+              
               return BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   if (state is LoginSuccess) {

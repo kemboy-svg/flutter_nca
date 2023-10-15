@@ -15,3 +15,4 @@ final class ProjectPageState extends SwitchPageState{}
  
  final class LoadingState extends SwitchPageState{}
  final class ForgotPasswordPageState extends SwitchPageState{}
+ final class LoginScreen extends SwitchPageState{}

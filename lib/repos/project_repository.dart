@@ -21,8 +21,8 @@ class AddProjectRepo {
   ) async {
     try {
      final Map<String, dynamic>requestBody ={
-      "projectName": ProjectName,
-      "coordinates": coordinatesString,
+      "ProjectName": ProjectName,
+      "Coordinates": coordinatesString,
 
      };
      

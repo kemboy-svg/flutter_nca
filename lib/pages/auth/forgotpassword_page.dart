@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({Key? key});
@@ -7,6 +9,15 @@ class ForgotPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            context.read<SwitchPageCubit>().navigateToLogin();
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.blue,
         title: Text(
           'Forgot Password',
@@ -34,7 +45,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Please enter your email address"),
+          Text("To reset your password, Please enter your email address"),
           SizedBox(
             height: 20,
           ),

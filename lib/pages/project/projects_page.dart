@@ -7,21 +7,21 @@ import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/data/project_model.dart';
-import 'package:nca/pages/project_details_page.dart';
+import 'package:nca/pages/auth/login_page.dart';
+import 'package:nca/pages/project/project_details_page.dart';
 import 'package:nca/pages/widgets/add_image_dialog.dart';
 import 'package:nca/pages/widgets/add_newproject_dialog.dart';
 
-// import 'package:geolocator/geolocator.dart';
 
 class ProjectPage extends StatelessWidget {
   const ProjectPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // final projectContext=context;
     final loginState = context.read<LoginBloc>().state;
     String userName = "";
     String token = "";
-   
 
     if (loginState is LoginSuccess) {
       userName = loginState.user.firstName;
@@ -29,12 +29,10 @@ class ProjectPage extends StatelessWidget {
     }
     return BlocBuilder<SwitchPageCubit, SwitchPageState>(
       builder: (context, state) {
-       
         if (state is ProjectDetailsPageState) {
           //  final projectState = context.read<UserProjectsBloc>().state;
 
-          
-        //  context.read<UserProjectsBloc>().add(LoadProjectsEvent(token:state.token));
+          //  context.read<UserProjectsBloc>().add(LoadProjectsEvent(token:state.token));
           return ProjectDetailsPage();
         }
         if (state is LoadingState) {
@@ -43,7 +41,11 @@ class ProjectPage extends StatelessWidget {
             backgroundColor: Colors.blue,
           ));
         }
-       
+        if(state is LoginScreen){
+        
+          return LoginPage();
+        }
+
         return Scaffold(
           backgroundColor: Image.asset('images/Contours.png').color,
           appBar: AppBar(
@@ -56,14 +58,24 @@ class ProjectPage extends StatelessWidget {
             ),
             actions: [
               Padding(
-                padding: const EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 10.0),
                 child: IconButton(
                   icon: Image.asset('images/settings_icon.png'),
                   onPressed: () {
                     BlocProvider.of<SwitchPageCubit>(context).navigateToLogin();
-                    // context.read<SwitchPageCubit>().navigateToLogin();
                   },
                   iconSize: 15,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: IconButton(
+                  icon: Icon(Icons.exit_to_app_rounded),
+                  onPressed: () {
+                    context.read<SwitchPageCubit>().navigateToLoginScreen();
+                  },
+                  iconSize: 25,
+                  color: Colors.red,
                 ),
               ),
             ],
@@ -191,12 +203,14 @@ class ProjectBanner extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(30.0),
       child: GestureDetector(
-        
         onTap: () {
           context.read<SwitchPageCubit>().navigateToProjectDetails();
-          context.read<ProjectDetailsBloc>().add(LoadProjectDetailsEvent(token: token,projectId: Id));
-          context.read<GetDocumentsBloc>().add(LoadDocumentsEvent(token: token, projectId: Id));
-          
+          context
+              .read<ProjectDetailsBloc>()
+              .add(LoadProjectDetailsEvent(token: token, projectId: Id));
+          context
+              .read<GetDocumentsBloc>()
+              .add(LoadDocumentsEvent(token: token, projectId: Id));
         },
         child: Container(
           decoration: BoxDecoration(

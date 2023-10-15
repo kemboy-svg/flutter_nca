@@ -11,7 +11,7 @@ import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nca/pages/login_page.dart';
+import 'package:nca/pages/auth/login_page.dart';
 import 'package:nca/repos/project_repository.dart';
 // import 'package:nca/pages/projects_page.dart';
 import 'package:nca/repos/user_repository.dart';
