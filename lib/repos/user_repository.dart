@@ -2,9 +2,10 @@ import 'package:http/http.dart' as http;
 import 'package:nca/data/serverResponse_model.dart';
 import 'dart:convert';
 import 'package:nca/data/user_model.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-// final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
-final String endpoint = "https://localhost:7284";
+ final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
+// final String endpoint = "https://localhost:7284";
 
 class LoginResponse {
   final bool success;
@@ -46,7 +47,33 @@ class LoginRepository {
       return LoginResponse(success: false, error: error.toString());
     }
   }
+
+  
 }
+
+final storage = FlutterSecureStorage();
+
+// Save user credentials
+Future<void> saveCredentials(UserCredentials credentials) async {
+  await storage.write(key: 'email', value: credentials.email);
+  await storage.write(key: 'password', value: credentials.password);
+}
+
+// Retrieve user credentials
+Future<UserCredentials?> getSavedCredentials() async {
+  final email = await storage.read(key: 'email');
+  final password = await storage.read(key: 'password');
+
+  if (email != null && password != null) {
+    return UserCredentials(email: email, password: password);
+  } else {
+    return null;
+  }
+}
+
+
+
+
 
 class SignUpRepo {
   Future<Object> signupUser(

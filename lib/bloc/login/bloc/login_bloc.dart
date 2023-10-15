@@ -3,7 +3,6 @@ import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 import 'package:nca/data/serverResponse_model.dart';
 import 'package:nca/data/user_model.dart';
-// import 'package:nca/data/user_model.dart';
 import 'package:nca/repos/user_repository.dart';
 
 part 'login_event.dart';
@@ -20,6 +19,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           event.username,
           event.password,
         );
+        if (event.rememberMe) {
+          // If "Remember Me" is checked, save the credentials
+          final credentials = UserCredentials(
+            email: event.username,
+            password: event.password,
+          );
+          saveCredentials(credentials);
+        }
 
         if (response.success) {
           emit(LoginSuccess(response.userDetails!));
@@ -36,5 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // emit(LoginFailure(e: e.toString()));
       }
     });
+
+    
   }
 }

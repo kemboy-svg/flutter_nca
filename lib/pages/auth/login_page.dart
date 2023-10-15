@@ -3,6 +3,7 @@ import 'package:nca/bloc/login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
+import 'package:nca/data/user_model.dart';
 import 'package:nca/pages/auth/forgotpassword_page.dart';
 import 'package:nca/pages/auth/signup_page.dart';
 import 'package:nca/pages/project/projects_page.dart';
@@ -19,18 +20,17 @@ class LoginPage extends StatelessWidget {
         create: (context) => LoginBloc(LoginRepository()),
         child: BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            if(state is LoginNOSuccess){
+            if (state is LoginNOSuccess) {
               ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(
-                     SnackBar(
-                      
-                      content: Center(
-                        child: Text('Incorrect credentials, Please check your login details')
-                      ),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
+                ..hideCurrentSnackBar()
+                ..showSnackBar(
+                  SnackBar(
+                    content: Center(
+                        child: Text(
+                            'Incorrect credentials, Please check your login details')),
+                    backgroundColor: Colors.red,
+                  ),
+                );
             }
             if (state is LoginFailure) {
               showDialog(
@@ -58,15 +58,17 @@ class LoginPage extends StatelessWidget {
               if (state is SignUpPageState) {
                 return SignUpPage();
               }
-              if(state is ForgotPasswordPageState){
+              if (state is ForgotPasswordPageState) {
                 return ForgotPasswordPage();
               }
-              
+
               return BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, state) {
                   if (state is LoginSuccess) {
-                    context.read<UserProjectsBloc>().add(LoadProjectsEvent(token:state.user.token));
- 
+                    context
+                        .read<UserProjectsBloc>()
+                        .add(LoadProjectsEvent(token: state.user.token));
+
                     return ProjectPage();
                   } else {
                     return SingleChildScrollView(
@@ -142,11 +144,6 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-
-
-
-
-
 class form extends StatefulWidget {
   final TextEditingController usernameController;
   final TextEditingController passwordController;
@@ -165,13 +162,15 @@ class _FormState extends State<form> {
   bool isButtonEnabled = false;
   int minPasswordLength = 6;
   int minUsernameLength = 4;
+  bool rememberMe = false;
 
   @override
   void initState() {
     super.initState();
-
+  
     widget.usernameController.addListener(updateButtonState);
     widget.passwordController.addListener(updateButtonState);
+    getAndPreFillSavedCredentials();
   }
 
   @override
@@ -191,6 +190,17 @@ class _FormState extends State<form> {
           password.isNotEmpty &&
           password.length >= minPasswordLength;
     });
+  }
+
+   Future<void> getAndPreFillSavedCredentials() async {
+    // final loginBloc = BlocProvider.of<LoginBloc>(context);
+    final savedCredentials = await getSavedCredentials();
+    if (savedCredentials != null) {
+      widget.usernameController.text = savedCredentials.email;
+      widget.passwordController.text = savedCredentials.password;
+      rememberMe = true; // You can also update the "Remember Me" checkbox
+      updateButtonState(); // Update the login button state
+    }
   }
 
   @override
@@ -219,8 +229,6 @@ class _FormState extends State<form> {
                 ),
               ),
             ),
-
-            
             SizedBox(height: 40),
             TextFormField(
               controller: widget.passwordController,
@@ -236,6 +244,25 @@ class _FormState extends State<form> {
                 ),
               ),
               obscureText: true,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: <Widget>[
+                Checkbox(
+                  value: rememberMe,
+                  onChanged: (value) {
+                    setState(() {
+                      rememberMe = value!;
+                    });
+                  },
+                ),
+                Text(
+                  'Remember Me',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ],
             ),
             SizedBox(height: 60),
             BlocBuilder<LoginBloc, LoginState>(
@@ -265,8 +292,15 @@ class _FormState extends State<form> {
                               LoginButtonPressed(
                                 username: widget.usernameController.text,
                                 password: widget.passwordController.text,
+                                rememberMe: rememberMe,
                               ),
                             );
+                            if (rememberMe) {
+                              final credentials = UserCredentials(
+                                  email: widget.usernameController.text, 
+                                  password: widget.passwordController.text);
+                              saveCredentials(credentials);
+                            }
                           }
                         : null,
                   );
@@ -297,7 +331,7 @@ class _bottomItems extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-             context.read<SwitchPageCubit>().navigateToForgotpassword();
+            context.read<SwitchPageCubit>().navigateToForgotpassword();
           },
           child: Text(
             "Forgot password?",
