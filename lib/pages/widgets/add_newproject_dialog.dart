@@ -8,7 +8,6 @@ import 'package:nca/bloc/add_project/bloc/add_project_bloc.dart';
 import 'package:nca/bloc/pick_coordinates/bloc/coordinates_bloc.dart';
 import 'package:nca/bloc/update_image/bloc/pick_image_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
-import 'package:nca/pages/widgets/add_image_dialog.dart';
 import 'package:nca/repos/project_repository.dart';
 
 class AddProjectDialog extends StatelessWidget {
