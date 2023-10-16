@@ -17,11 +17,6 @@ class SwitchPageCubit extends Cubit<SwitchPageState> {
     
   }
 
-  void navigateToLoginScreen(){
-   
-      emit(LoginScreen());
-   
-  }
 
   void navigateToProjectDetails() {
     emit(LoadingState());

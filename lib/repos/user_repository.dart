@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:nca/data/user_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
- final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
-// final String endpoint = "https://localhost:7284";
+// final String endpoint = 'https://nca-qa-api.agilebiz.co.ke';
+ final String endpoint = "https://localhost:7284";
 
 class LoginResponse {
   final bool success;
@@ -47,8 +47,6 @@ class LoginRepository {
       return LoginResponse(success: false, error: error.toString());
     }
   }
-
-  
 }
 
 final storage = FlutterSecureStorage();
@@ -70,10 +68,6 @@ Future<UserCredentials?> getSavedCredentials() async {
     return null;
   }
 }
-
-
-
-
 
 class SignUpRepo {
   Future<Object> signupUser(
@@ -114,6 +108,27 @@ class SignUpRepo {
     } catch (error, stacktrace) {
       print("stackTrace${stacktrace}");
       print('Error while signing up: $error');
+      return false;
+    }
+  }
+}
+
+class ForgotEmailRepo {
+  Future<bool> userEmail(String Email) async {
+    final Map<String, dynamic> requestBody = {"Email": Email};
+
+    final response = await http.post(
+      Uri.parse('$endpoint/api/auth/SendForgotPasswordLink'),
+       body: jsonEncode(requestBody),
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+    );
+    if(response.statusCode==200){
+      return true;
+    }else{
       return false;
     }
   }

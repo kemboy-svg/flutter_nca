@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nca/bloc/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,24 +8,76 @@ class ForgotPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            context.read<SwitchPageCubit>().navigateToLogin();
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-        ),
-        backgroundColor: Colors.blue,
-        title: Text(
-          'Forgot Password',
-          style: TextStyle(color: Colors.white),
-        ),
+    return BlocListener<ForgotPasswordBloc, ForgotPasswordState>(
+      listener: (context, state) {
+        if (state is SubmitEmailFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                content: Center(
+                  child: Text(
+                      'Email submission failed, please check your email and try again'),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+        }
+        if (state is SubmitEmailSuccess) {
+          showDialog(
+            context: context,
+            builder: (BuildContext dialogcontext) {
+              return AlertDialog(
+                title: Center(
+                  child: Text(
+                    'Password reset link has been sent to your email\n Use the link to reset your password',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      try {
+                        Navigator.of(context).pop();
+                        Navigator.of(context)
+                            .pop(); // This will close the AddProjectDialog
+
+                        //  context.read<SwitchPageCubit>().navigateToProjectsPage();
+                      } catch (e) {
+                        print(e.toString());
+                      }
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      },
+      child: BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  context.read<SwitchPageCubit>().navigateToLogin();
+                },
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+              ),
+              backgroundColor: Colors.blue,
+              title: Text(
+                'Forgot Password',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            body: ForgotPasswordForm(),
+          );
+        },
       ),
-      body: ForgotPasswordForm(),
     );
   }
 }
@@ -39,6 +92,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final forgotPassBloc = BlocProvider.of<ForgotPasswordBloc>(context);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -64,21 +118,34 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
             ),
           ),
           SizedBox(height: 16.0),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () {},
-            child: Text(
-              'Submit',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
+            builder: (context, state) {
+              if (state is SubmittingEmailState) {
+                return CircularProgressIndicator(
+                  color: Colors.blue,
+                );
+              }
+
+              return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                onPressed: () {
+                  forgotPassBloc
+                      .add(onTappedSubmitButton(Email: emailController.text));
+                },
+                child: Text(
+                  'Submit',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),

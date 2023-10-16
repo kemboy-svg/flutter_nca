@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:nca/bloc/add_project/bloc/add_project_bloc.dart';
+import 'package:nca/bloc/forgot_password/bloc/forgot_password_bloc.dart';
 import 'package:nca/bloc/get_post_documents/bloc/get_documents_bloc.dart';
 // import 'package:nca/bloc/image_picker/bloc/pick_image_bloc.dart';
 import 'package:nca/bloc/login/bloc/login_bloc.dart';
@@ -17,7 +19,10 @@ import 'package:nca/repos/project_repository.dart';
 import 'package:nca/repos/user_repository.dart';
 
 void main() {
+   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
+     FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
@@ -63,9 +68,12 @@ class MyApp extends StatelessWidget {
            BlocProvider(
             create: (context) => GetDocumentsBloc(ProjectsDocumentsRepo(),),
           ),
+          BlocProvider(create: (context)=>ForgotPasswordBloc(ForgotEmailRepo()))
         ],
         child: LoginPage(),
       ),
+        
+
     );
   }
 }

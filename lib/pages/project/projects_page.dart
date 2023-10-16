@@ -7,7 +7,6 @@ import 'package:nca/bloc/user_projects/bloc/project_details_bloc.dart';
 import 'package:nca/bloc/user_projects/bloc/user_projects_bloc.dart';
 import 'package:nca/cubit/switch_page_cubit.dart';
 import 'package:nca/data/project_model.dart';
-import 'package:nca/pages/auth/login_page.dart';
 import 'package:nca/pages/project/project_details_page.dart';
 import 'package:nca/pages/widgets/add_image_dialog.dart';
 import 'package:nca/pages/widgets/add_newproject_dialog.dart';
@@ -18,7 +17,7 @@ class ProjectPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final projectContext=context;
+     final projectContext=context;
     final loginState = context.read<LoginBloc>().state;
     String userName = "";
     String token = "";
@@ -41,12 +40,13 @@ class ProjectPage extends StatelessWidget {
             backgroundColor: Colors.blue,
           ));
         }
-        if(state is LoginScreen){
+        // if(state is LoginPageState){
         
-          return LoginPage();
-        }
+        //   return LoginPage();
+        // }
 
         return Scaffold(
+          
           backgroundColor: Image.asset('images/Contours.png').color,
           appBar: AppBar(
             title: Text(
@@ -57,6 +57,7 @@ class ProjectPage extends StatelessWidget {
                   color: Colors.blue),
             ),
             actions: [
+            
               Padding(
                 padding: const EdgeInsets.only(right: 10.0),
                 child: IconButton(
@@ -68,11 +69,11 @@ class ProjectPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 10.0),
+                padding:  EdgeInsets.only(right: 10.0),
                 child: IconButton(
                   icon: Icon(Icons.exit_to_app_rounded),
                   onPressed: () {
-                    context.read<SwitchPageCubit>().navigateToLoginScreen();
+                    context.read<SwitchPageCubit>().navigateToLogin();
                   },
                   iconSize: 25,
                   color: Colors.red,

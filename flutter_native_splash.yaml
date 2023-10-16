@@ -1,0 +1,4 @@
+flutter_native_splash:
+  images: assets/nca-logo.png
+  color: "#FFFFFF"
+  image_background_color: "#FFFFFF"
