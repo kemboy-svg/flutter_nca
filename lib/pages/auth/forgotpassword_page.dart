@@ -30,7 +30,7 @@ class ForgotPasswordPage extends StatelessWidget {
               return AlertDialog(
                 title: Center(
                   child: Text(
-                    'Password reset link has been sent to your email\n Use the link to reset your password',
+                    'Password reset link has been sent to your email, Use the link to reset your password',
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
